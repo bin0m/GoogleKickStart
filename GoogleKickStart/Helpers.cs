@@ -3,43 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-
 namespace GoogleKickStart
 {
-    public class Solution
+    static class Helpers
     {
         static void Solve()
         {
             int n = ReadInt();
-            int k = ReadInt();
-
-            int[] a = ReadIntArr();            
-
-            int count = 0;
-
-            for (int i = n - 1; i >= 0; i--)
-            {
-                if (a[i] == 1)
-                {
-                    i--;
-                    int nextCount = 2;
-                    while (i >= 0 && nextCount <= k && a[i] == nextCount)
-                    {
-                        nextCount++;
-                        i--;
-                    }
-                    if (nextCount - 1 == k)
-                    {
-                        count++;
-                    }
-                    i++;
-                }
-            }
-
+            int ans = 123;
+            
             PrintCase();
-            Console.WriteLine(count);
+            Console.WriteLine(ans);
         }
-
+        
+        
         static int _caseNum;
         static IEnumerable<string> _tokens;
         static IEnumerator<string> _tokenEnumarator;
@@ -73,7 +50,7 @@ namespace GoogleKickStart
 
         static string ReadNextToken()
         {
-            while(_tokens == null || _tokenEnumarator?.Current == null)
+            while (_tokens == null || _tokenEnumarator?.Current == null)
             {
                 _tokens = Console.ReadLine().Trim().Split(' ');
                 _tokenEnumarator = _tokens.GetEnumerator();
@@ -88,7 +65,7 @@ namespace GoogleKickStart
             return token;
         }
 
-        public static void Main(string[] args)
+        public static void RenameToMain(string[] args)
         {
             int t = ReadInt();
 
@@ -97,9 +74,8 @@ namespace GoogleKickStart
                 Solve();
             }
 
-            Console.ReadLine();
+            //Console.ReadLine();
         }
 
-        
     }
 }
