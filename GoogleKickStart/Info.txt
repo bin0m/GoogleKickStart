@@ -1,0 +1,6 @@
+﻿Running evironment:
+On google servers: Mono JIT 4.6.2 (package: mono-devel)
+mcs -optimize+ -r:System.Numerics.dll -out:Solution.exe Solution.cs
+
+Hints:
+output number > 10^9 => use long
