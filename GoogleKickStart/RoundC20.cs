@@ -59,9 +59,9 @@ namespace GoogleKickStart
 
             string[] rows = new string[r];
 
-            for (int ri = r - 1; ri >= 0; ri--)
+            for (int row = r - 1; row >= 0; row--)
             {
-                rows[ri] = Console.ReadLine().Trim();
+                rows[row] = Console.ReadLine().Trim();
             }
 
             PrintCase();
@@ -69,21 +69,21 @@ namespace GoogleKickStart
             var nodes = new HashSet<char>();
             var edges = new HashSet<Tuple<char, char>>();
 
-            for (int ri = 0; ri < r; ri++)
+            for (int row = 0; row < r; row++)
             {
-                for (int j = 0; j < c; j++)
+                for (int col = 0; col < c; col++)
                 {
-                    char ch = rows[ri][j];
-                    if (!nodes.Contains(ch))
+                    char node = rows[row][col];
+                    if (!nodes.Contains(node))
                     {
-                        nodes.Add(ch);
+                        nodes.Add(node);
                     }
 
                     // add edges
-                    if (ri > 0 && rows[ri - 1][j] != ch)
+                    if (row > 0 && rows[row - 1][col] != node)
                     {
-                        char down = rows[ri - 1][j];
-                        var edge = new Tuple<char, char>(down, ch);
+                        char down = rows[row - 1][col];
+                        var edge = new Tuple<char, char>(down, node);
                         if (!edges.Contains(edge))
                         {
                             edges.Add(edge);
@@ -120,7 +120,6 @@ namespace GoogleKickStart
             // while S is non-empty do
             while (S.Any())
             {
-
                 //  remove a node n from S
                 var n = S.First();
                 S.Remove(n);
