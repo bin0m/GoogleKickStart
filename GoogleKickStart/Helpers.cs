@@ -41,10 +41,27 @@ namespace GoogleKickStart
             return long.Parse(ReadNextToken());
         }
 
+        static string ReadString()
+        {
+            return ReadNextToken();
+        }
+
+        static char ReadChar()
+        {
+            return char.Parse(ReadNextToken());
+        }
+
         static int[] ReadIntArr()
         {
             string s = Console.ReadLine().Trim();
             int[] a = (from v in s.Split(' ') select int.Parse(v)).ToArray();
+            return a;
+        }
+
+        static long[] ReadLongArr()
+        {
+            string s = Console.ReadLine().Trim();
+            long[] a = (from v in s.Split(' ') select long.Parse(v)).ToArray();
             return a;
         }
 

@@ -14,45 +14,34 @@ namespace GoogleKickStart
           1 2 3 7 9 3 2 1 8 3 2 1 */
         static void TaskA_Countdown()
         {
-            int t;
-            string s = Console.ReadLine().Trim();
-            t = int.Parse(s);
+            int n = ReadInt();
+            int k = ReadInt();
 
-            for (int ti = 1; ti <= t; ti++)
+            int[] a = ReadIntArr();
+
+            int count = 0;
+
+            for (int i = n - 1; i >= 0; i--)
             {
-                s = Console.ReadLine().Trim();
-                var ss = s.Split(' ');
-                int n = int.Parse(ss[0]);
-                int k = int.Parse(ss[1]);
-
-                s = Console.ReadLine().Trim();
-                int[] a = (from v in s.Split(' ') select int.Parse(v)).ToArray();
-
-                Console.Write($"Case #{ti}: ");
-
-                int count = 0;
-                               
-                for (int i = n - 1; i >= 0; i--)
+                if (a[i] == 1)
                 {
-                    if (a[i] == 1)
+                    i--;
+                    int nextCount = 2;
+                    while (i >= 0 && nextCount <= k && a[i] == nextCount)
                     {
+                        nextCount++;
                         i--;
-                        int nextCount = 2;
-                        while (i >= 0 && nextCount <= k && a[i] == nextCount)
-                        {
-                            nextCount++;
-                            i--;
-                        }
-                        if (nextCount - 1 == k)
-                        {
-                            count++;
-                        }
-                        i++;
                     }
+                    if (nextCount - 1 == k)
+                    {
+                        count++;
+                    }
+                    i++;
                 }
-
-                Console.WriteLine(count);
             }
+
+            PrintCase();
+            Console.WriteLine(count);
         }
 
 
@@ -65,69 +54,58 @@ namespace GoogleKickStart
             ZZZZOM  */
         static void TaskB_StableWall()
         {
-            int t;
-            string s = Console.ReadLine().Trim();
-            t = int.Parse(s);
+            int r = ReadInt();
+            int c = ReadInt();
 
-            for (int ti = 1; ti <= t; ti++)
+            string[] rows = new string[r];
+
+            for (int ri = r - 1; ri >= 0; ri--)
             {
-                s = Console.ReadLine().Trim();
-                var ss = s.Split(' ');
-                int r = int.Parse(ss[0]);
-                int c = int.Parse(ss[1]);
+                rows[ri] = Console.ReadLine().Trim();
+            }
 
-                string[] rows = new string[r];
+            PrintCase();
 
-                for (int ri = r - 1; ri >= 0; ri--)
+            var nodes = new HashSet<char>();
+            var edges = new HashSet<Tuple<char, char>>();
+
+            for (int ri = 0; ri < r; ri++)
+            {
+                for (int j = 0; j < c; j++)
                 {
-                    rows[ri] = Console.ReadLine().Trim();
-                }
-
-                Console.Write($"Case #{ti}: ");
-
-                var nodes = new HashSet<char>();
-                var edges = new HashSet<Tuple<char, char>>();
-
-
-                for (int ri = 0; ri < r; ri++)
-                {
-                    for (int j = 0; j < c; j++)
+                    char ch = rows[ri][j];
+                    if (!nodes.Contains(ch))
                     {
-                        char ch = rows[ri][j];
-                        if (!nodes.Contains(ch))
-                        {
-                            nodes.Add(ch);
-                        }
+                        nodes.Add(ch);
+                    }
 
-                        // add edges
-                        if (ri > 0 && rows[ri - 1][j] != ch)
+                    // add edges
+                    if (ri > 0 && rows[ri - 1][j] != ch)
+                    {
+                        char down = rows[ri - 1][j];
+                        var edge = new Tuple<char, char>(down, ch);
+                        if (!edges.Contains(edge))
                         {
-                            char down = rows[ri - 1][j];
-                            var edge = new Tuple<char, char>(down, ch);
-                            if (!edges.Contains(edge))
-                            {
-                                edges.Add(edge);
-                            }
+                            edges.Add(edge);
                         }
                     }
                 }
-
-                var sorted = TopologicalSort(nodes, edges);
-
-                string ans;
-
-                if (sorted != null)
-                {
-                    ans = new string(sorted.ToArray());
-                }
-                else
-                {
-                    ans = "-1";
-                }
-
-
-                Console.WriteLine(ans);
             }
+
+            var sorted = TopologicalSort(nodes, edges);
+
+            string ans;
+
+            if (sorted != null)
+            {
+                ans = new string(sorted.ToArray());
+            }
+            else
+            {
+                ans = "-1";
+            }
+
+            Console.WriteLine(ans);
         }
 
         // Helper to TaskB_StableWall
@@ -187,9 +165,7 @@ namespace GoogleKickStart
           30 30 9 1 30  */
         static void TaskC_PerfectSbarray()
         {
-            int t;
-            string s = Console.ReadLine().Trim();
-            t = int.Parse(s);
+            int t = ReadInt();
 
             var hs = new HashSet<int>();
             int upper = (int)Math.Sqrt(100 * 10000);
@@ -202,14 +178,11 @@ namespace GoogleKickStart
                 hs.Add(i * i);
             }
 
-            for (int ti = 1; ti <= t; ti++)
+            for (_caseNum = 1; _caseNum <= t; _caseNum++)
             {
-                s = Console.ReadLine().Trim();
-                int n = int.Parse(s);
-                s = Console.ReadLine().Trim();
-                int[] a = (from v in s.Split(' ') select int.Parse(v)).ToArray();
-
-                Console.Write($"Case #{ti}: ");
+                int n = ReadInt();
+                int[] a = ReadIntArr();
+                
                 int ans = 0;
 
                 for (int i = 0; i < n; i++)
@@ -224,7 +197,7 @@ namespace GoogleKickStart
                         }
                     }
                 }
-
+                PrintCase();
                 Console.WriteLine(ans);
             }
         }
@@ -240,110 +213,162 @@ namespace GoogleKickStart
          Q 1 2   */
         static void TaskD_Candies()
         {
-            int t;
-            string s = Console.ReadLine().Trim();
-            t = int.Parse(s);
+            int n = ReadInt();
+            int q = ReadInt();
+            int[] a = ReadIntArr();
 
-            for (int ti = 1; ti <= t; ti++)
+            long ans = 0;
+
+            int[,] times = new int[n, n];
+            int[,] sums = new int[n, n];
+
+            for (int i = 0; i < n; i++)
             {
-                s = Console.ReadLine().Trim();
-                var ss = s.Split(' ');
-                int n = int.Parse(ss[0]);
-                int q = int.Parse(ss[1]);
-                s = Console.ReadLine().Trim();
-                int[] a = (from v in s.Split(' ') select int.Parse(v)).ToArray();
-
-                long ans = 0;
-
-                int[,] times = new int[n, n];
-                int[,] sums = new int[n, n];
-
-                for (int i = 0; i < n; i++)
+                for (int j = 0; j <= i; j++)
                 {
-                    for (int j = 0; j <= i; j++)
+                    if (j == 0)
                     {
-                        if (j == 0)
-                        {
-                            times[i, j] = a[i];
-                        }
-                        else
-                        {
-                            times[i, j] = times[i, j - 1] + a[i];
-                        }
-
-                    }
-                }
-
-                for (int i = 0; i < n; i++)
-                {
-                    short sign = 1;
-                    for (int j = i; j < n; j++)
-                    {
-                        if (j == 0)
-                        {
-                            sums[i, j] = a[i];
-                        }
-                        else
-                        {
-                            sums[i, j] = sums[i, j - 1] + sign * times[j, j - i];
-                        }
-                        sign *= -1;
-                    }
-                }
-
-                for (int qi = 0; qi < q; qi++)
-                {
-                    s = Console.ReadLine().Trim();
-                    ss = s.Split(' ');
-                    char type = char.Parse(ss[0]);
-                    if (type == 'U')
-                    {
-                        int x = int.Parse(ss[1]) - 1;
-                        int v = int.Parse(ss[2]);
-                        int prev = a[x];
-                        a[x] = v;
-
-                        for (int j = 0; j <= x; j++)
-                        {
-                            if (j == 0)
-                            {
-                                times[x, j] = a[x];
-                            }
-                            else
-                            {
-                                times[x, j] = times[x, j - 1] + a[x];
-                            }
-                        }
-
-                        for (int i = 0; i <= x; i++)
-                        {
-                            short sign = (short)Math.Pow(-1, x - i);
-                            for (int j = x; j < n; j++)
-                            {
-                                if (j == 0)
-                                {
-                                    sums[i, j] = a[i];
-                                }
-                                else
-                                {
-                                    sums[i, j] = sums[i, j - 1] + sign * times[j, j - i];
-                                }
-                                sign *= -1;
-                            }
-                        }
+                        times[i, j] = a[i];
                     }
                     else
                     {
-                        int l = int.Parse(ss[1]) - 1;
-                        int r = int.Parse(ss[2]) - 1;
-                        ans += sums[l, r];
+                        times[i, j] = times[i, j - 1] + a[i];
+                    }
+
+                }
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                short sign = 1;
+                for (int j = i; j < n; j++)
+                {
+                    if (j == 0)
+                    {
+                        sums[i, j] = a[i];
+                    }
+                    else
+                    {
+                        sums[i, j] = sums[i, j - 1] + sign * times[j, j - i];
+                    }
+                    sign *= -1;
+                }
+            }
+
+            for (int qi = 0; qi < q; qi++)
+            {
+                char type = ReadChar();
+                if (type == 'U')
+                {
+                    int x = ReadInt() - 1;
+                    int v = ReadInt();
+                    int prev = a[x];
+                    a[x] = v;
+
+                    for (int j = 0; j <= x; j++)
+                    {
+                        if (j == 0)
+                        {
+                            times[x, j] = a[x];
+                        }
+                        else
+                        {
+                            times[x, j] = times[x, j - 1] + a[x];
+                        }
+                    }
+
+                    for (int i = 0; i <= x; i++)
+                    {
+                        short sign = (short)Math.Pow(-1, x - i);
+                        for (int j = x; j < n; j++)
+                        {
+                            if (j == 0)
+                            {
+                                sums[i, j] = a[i];
+                            }
+                            else
+                            {
+                                sums[i, j] = sums[i, j - 1] + sign * times[j, j - i];
+                            }
+                            sign *= -1;
+                        }
                     }
                 }
-
-                Console.Write($"Case #{ti}: ");
-
-                Console.WriteLine(ans);
+                else
+                {
+                    int l = ReadInt() - 1;
+                    int r = ReadInt() - 1;
+                    ans += sums[l, r];
+                }
             }
+
+            PrintCase();
+            Console.WriteLine(ans);
+        }
+
+        static int _caseNum = 1;
+        static IEnumerable<string> _tokens;
+        static IEnumerator<string> _tokenEnumarator;
+
+        static void PrintCase()
+        {
+            Console.Write($"Case #{_caseNum}: ");
+        }
+
+        static void PrintCaseLine()
+        {
+            Console.WriteLine($"Case #{_caseNum}: ");
+        }
+
+        static int ReadInt()
+        {
+            return int.Parse(ReadNextToken());
+        }
+
+        static long ReadLong()
+        {
+            return long.Parse(ReadNextToken());
+        }
+
+        static string ReadString()
+        {
+            return ReadNextToken();
+        }
+
+        static char ReadChar()
+        {
+            return char.Parse(ReadNextToken());
+        }
+
+        static int[] ReadIntArr()
+        {
+            string s = Console.ReadLine().Trim();
+            int[] a = (from v in s.Split(' ') select int.Parse(v)).ToArray();
+            return a;
+        }
+
+        static long[] ReadLongArr()
+        {
+            string s = Console.ReadLine().Trim();
+            long[] a = (from v in s.Split(' ') select long.Parse(v)).ToArray();
+            return a;
+        }
+
+        static string ReadNextToken()
+        {
+            while (_tokens == null || _tokenEnumarator?.Current == null)
+            {
+                _tokens = Console.ReadLine().Trim().Split(' ');
+                _tokenEnumarator = _tokens.GetEnumerator();
+                _tokenEnumarator.MoveNext();
+            }
+            string token = _tokenEnumarator.Current;
+            if (!_tokenEnumarator.MoveNext())
+            {
+                _tokenEnumarator.Dispose();
+                _tokenEnumarator = null;
+            }
+            return token;
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-
 namespace GoogleKickStart
 {
     public class Solution
@@ -11,34 +10,98 @@ namespace GoogleKickStart
         static void Solve()
         {
             int n = ReadInt();
-            int k = ReadInt();
+            int q = ReadInt();
+            int[] a = ReadIntArr();
 
-            int[] a = ReadIntArr();            
+            long ans = 0;
 
-            int count = 0;
+            int[,] times = new int[n, n];
+            int[,] sums = new int[n, n];
 
-            for (int i = n - 1; i >= 0; i--)
+            for (int i = 0; i < n; i++)
             {
-                if (a[i] == 1)
+                for (int j = 0; j <= i; j++)
                 {
-                    i--;
-                    int nextCount = 2;
-                    while (i >= 0 && nextCount <= k && a[i] == nextCount)
+                    if (j == 0)
                     {
-                        nextCount++;
-                        i--;
+                        times[i, j] = a[i];
                     }
-                    if (nextCount - 1 == k)
+                    else
                     {
-                        count++;
+                        times[i, j] = times[i, j - 1] + a[i];
                     }
-                    i++;
+
+                }
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                short sign = 1;
+                for (int j = i; j < n; j++)
+                {
+                    if (j == 0)
+                    {
+                        sums[i, j] = a[i];
+                    }
+                    else
+                    {
+                        sums[i, j] = sums[i, j - 1] + sign * times[j, j - i];
+                    }
+                    sign *= -1;
+                }
+            }
+
+            for (int qi = 0; qi < q; qi++)
+            {
+                char type = ReadChar();
+                if (type == 'U')
+                {
+                    int x = ReadInt() - 1;
+                    int v = ReadInt();
+                    int prev = a[x];
+                    a[x] = v;
+
+                    for (int j = 0; j <= x; j++)
+                    {
+                        if (j == 0)
+                        {
+                            times[x, j] = a[x];
+                        }
+                        else
+                        {
+                            times[x, j] = times[x, j - 1] + a[x];
+                        }
+                    }
+
+                    for (int i = 0; i <= x; i++)
+                    {
+                        short sign = (short)Math.Pow(-1, x - i);
+                        for (int j = x; j < n; j++)
+                        {
+                            if (j == 0)
+                            {
+                                sums[i, j] = a[i];
+                            }
+                            else
+                            {
+                                sums[i, j] = sums[i, j - 1] + sign * times[j, j - i];
+                            }
+                            sign *= -1;
+                        }
+                    }
+                }
+                else
+                {
+                    int l = ReadInt() - 1;
+                    int r = ReadInt() - 1;
+                    ans += sums[l, r];
                 }
             }
 
             PrintCase();
-            Console.WriteLine(count);
+            Console.WriteLine(ans);   
         }
+    
 
         static int _caseNum;
         static IEnumerable<string> _tokens;
@@ -64,10 +127,27 @@ namespace GoogleKickStart
             return long.Parse(ReadNextToken());
         }
 
+        static string ReadString()
+        {
+            return ReadNextToken();
+        }
+
+        static char ReadChar()
+        {
+            return char.Parse(ReadNextToken());
+        }
+
         static int[] ReadIntArr()
         {
             string s = Console.ReadLine().Trim();
             int[] a = (from v in s.Split(' ') select int.Parse(v)).ToArray();
+            return a;
+        }
+
+        static long[] ReadLongArr()
+        {
+            string s = Console.ReadLine().Trim();
+            long[] a = (from v in s.Split(' ') select long.Parse(v)).ToArray();
             return a;
         }
 
@@ -91,15 +171,13 @@ namespace GoogleKickStart
         public static void Main(string[] args)
         {
             int t = ReadInt();
-
+            
             for (_caseNum = 1; _caseNum <= t; _caseNum++)
             {
                 Solve();
             }
 
             Console.ReadLine();
-        }
-
-        
+        }        
     }
 }
